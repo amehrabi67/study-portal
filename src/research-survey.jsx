@@ -30,8 +30,8 @@ const FIREBASE_CONFIG = {
 
 const EMAILJS_CONFIG = {
   serviceId:              "service_7n9kj6l",       // ← from Step 2.1
-  participantTemplateId:  "participant_confirmation",
-  collectorTemplateId:    "collector_notification",
+  participantTemplateId:  "template_ls42lia",
+  collectorTemplateId:    "template_pp9x0xh",
   publicKey:              "GaKWcX4-kTqTYOuzt", // ← from Step 2.3
 };
 
