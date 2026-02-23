@@ -138,15 +138,6 @@ async function fbAdd(collection, data) {
   } catch { return id; }
 }
 
-async function fbList(collection) {
-  const db = await getDB();
-  if (!db) return LS.get(collection) || [];
-  try {
-    const snap = await db.collection(collection).orderBy("registeredAt","desc").get();
-    return snap.docs.map(d => d.data());
-  } catch { return LS.get(collection) || []; }
-}
-
 // Real-time listener (Firestore onSnapshot, falls back to noop)
 function fbListen(collection, callback) {
   if (!isConfigured()) { callback(LS.get(collection) || []); return ()=>{}; }
@@ -608,7 +599,7 @@ Purdue University · IRB-2025-304`,
 // PARTICIPANT PORTAL
 // ─────────────────────────────────────────────────────────────────────────────
 function ParticipantPortal({ data, onHome }) {
-  const { slots, capacity, bookings, addBooking, loading } = data;
+  const { slots, capacity, bookings, addBooking, saveSlots, loading } = data;
   const [step,     setStep]    = useState(1);
   const [form,     setForm]    = useState({firstName:"",lastName:"",email:"",age:"",year:"",major:"",phone:""});
   const [selStaff, setSelStaff]= useState(null);
@@ -831,6 +822,12 @@ function ParticipantPortal({ data, onHome }) {
                   date:selDate, time:selTime,
                 };
                 await addBooking(bk);
+
+                // Remove the booked slot so no one else can book the same time
+                const updatedTimes = (slots?.[staff.id]?.[selDate] || []).filter(t => t !== selTime);
+                const updatedDateSlots = { ...(slots?.[staff.id] || {}), [selDate]: updatedTimes };
+                await saveSlots(staff.id, updatedDateSlots);
+
                 await sendEmails(bk, form, staff).catch(()=>{});
                 setBooking(bk);
                 setSending(false);
@@ -1070,7 +1067,6 @@ function AdminPortal({ data, onHome }) {
   // ── Excel export ──────────────────────────────────────────────────────────
   function exportExcel() {
     const wb = XLSX.utils.book_new();
-    const ts = new Date().toLocaleString();
 
     // ── Sheet 1: Participant Registrations ──
     const p_rows = bookings.map((b,i) => ({
@@ -1189,7 +1185,6 @@ function AdminPortal({ data, onHome }) {
 
   const totalBooked = bookings.length;
   const totalCap    = Object.values(capacity||DEFAULT_CAPACITY).reduce((a,b)=>a+b,0);
-  const totalSlots  = STAFF_BASE.reduce((n,s)=>n+Object.values(slots?.[s.id]||{}).reduce((x,a)=>x+a.length,0),0);
   const fillRate    = totalCap>0?Math.round((totalBooked/totalCap)*100):0;
 
   return (
