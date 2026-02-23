@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/study-portal/static/js/main.ce775aee.js",
+    "index.html": "/study-portal/index.html",
+    "main.ce775aee.js.map": "/study-portal/static/js/main.ce775aee.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.ce775aee.js"
+  ]
+}
