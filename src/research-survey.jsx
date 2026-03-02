@@ -40,18 +40,34 @@ const ADMIN_PIN = "0000";
 
 // ─── Staff roster ─────────────────────────────────────────────────────────────
 const STAFF_BASE = [
-  { id:"s1", name:"Amirreza Mehrabi", role:"Lead Data Collector", avatar:"AM", color:"#2D6A4F", pin:"1234", email:"amehrabi@purdue.edu" },
-  { id:"s2", name:"Sarah Chen",       role:"Data Collector",      avatar:"SC", color:"#1B4965", pin:"5678", email:"schen@purdue.edu"    },
-  { id:"s3", name:"Marcus Rivera",    role:"Data Collector",      avatar:"MR", color:"#6B2737", pin:"9012", email:"mrivera@purdue.edu"  },
+  { id: "s1", name: "Amirreza Mehrabi", role: "Lead Data Collector", avatar: "AM", color: "#2D6A4F", pin: "1234", email: "amehrabi@purdue.edu" },
+  { id: "s2", name: "Ako Abane Tabe", role: "Data Collector", avatar: "AT", color: "#1B4965", pin: "4829", email: "tabane@purdue.edu" },
+  { id: "s3", name: "Zhengyi Jiang", role: "Data Collector", avatar: "ZJ", color: "#6B2737", pin: "7104", email: "jiang808@purdue.edu" },
+  { id: "s4", name: "Manas Kathuria", role: "Data Collector", avatar: "MK", color: "#E07A5F", pin: "3952", email: "mkathuri@purdue.edu" },
+  { id: "s5", name: "Aashvi Miten Majmundar", role: "Data Collector", avatar: "AM", color: "#3D405B", pin: "8261", email: "amajmund@purdue.edu" },
+  { id: "s6", name: "Nidhi Kirani", role: "Data Collector", avatar: "NK", color: "#81B29A", pin: "5037", email: "nkirani@purdue.edu" },
+  { id: "s7", name: "Junior Bennett", role: "Data Collector", avatar: "JB", color: "#F2CC8F", pin: "6490", email: "benne322@purdue.edu" }
 ];
 
 const DEFAULT_SLOTS = {
-  s1:{ "2026-03-02":["9:00 AM","10:00 AM","2:00 PM","3:00 PM"],"2026-03-03":["11:00 AM","1:00 PM","4:00 PM"],"2026-03-05":["1:00 PM","2:00 PM","3:00 PM"],"2026-03-09":["9:00 AM","11:00 AM","2:00 PM"],"2026-03-10":["10:00 AM","1:00 PM","3:00 PM"] },
-  s2:{ "2026-03-02":["10:00 AM","11:00 AM","3:00 PM"],"2026-03-03":["9:00 AM","2:00 PM","4:00 PM"],"2026-03-05":["10:00 AM","11:00 AM","1:00 PM"],"2026-03-09":["9:00 AM","10:00 AM","2:00 PM"],"2026-03-12":["10:00 AM","1:00 PM","2:00 PM"] },
-  s3:{ "2026-03-03":["10:00 AM","11:00 AM","3:00 PM","4:00 PM"],"2026-03-04":["1:00 PM","2:00 PM","3:00 PM"],"2026-03-09":["11:00 AM","1:00 PM","3:00 PM"],"2026-03-11":["9:00 AM","10:00 AM","1:00 PM","2:00 PM"] },
+  s1: {},
+  s2: {},
+  s3: {},
+  s4: {},
+  s5: {},
+  s6: {},
+  s7: {}
 };
-const DEFAULT_CAPACITY = { s1:20, s2:18, s3:15 };
 
+const DEFAULT_CAPACITY = { 
+  s1: 20, 
+  s2: 15, 
+  s3: 15, 
+  s4: 15, 
+  s5: 15, 
+  s6: 15, 
+  s7: 15 
+};
 const ALL_TIMES = ["8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"];
 const DAYS   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
