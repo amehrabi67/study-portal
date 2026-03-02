@@ -494,12 +494,15 @@ function CalNav({ month, year, onChange }) {
 function PinPad({ onSuccess, pinColor="#1B4965", hint, title="Enter Your PIN", subtitle="" }) {
   const [pin, setPin] = useState("");
   const [err, setErr] = useState(false);
+  const pinRef = useRef("");
   function press(d) {
-    if (pin.length>=4) return;
-    const next = pin+d; setPin(next); setErr(false);
+    if (pinRef.current.length>=4) return;
+    const next = pinRef.current+d;
+    pinRef.current = next;
+    setPin(next); setErr(false);
     if (next.length===4) {
-      if (onSuccess(next)) setPin("");
-      else { setErr(true); setTimeout(()=>setPin(""),700); }
+      if (onSuccess(next)) { pinRef.current=""; setPin(""); }
+      else { setErr(true); setTimeout(()=>{ pinRef.current=""; setPin(""); },700); }
     }
   }
   return (
@@ -514,7 +517,7 @@ function PinPad({ onSuccess, pinColor="#1B4965", hint, title="Enter Your PIN", s
         {[1,2,3,4,5,6,7,8,9].map(n=><button key={n} className="pk" onClick={()=>press(String(n))}>{n}</button>)}
         <div/>
         <button className="pk" onClick={()=>press("0")}>0</button>
-        <button className="pk del" onClick={()=>{setPin(p=>p.slice(0,-1));setErr(false);}}>⌫</button>
+        <button className="pk del" onClick={()=>{pinRef.current=pinRef.current.slice(0,-1);setPin(pinRef.current);setErr(false);}}>⌫</button>
       </div>
       {err && <div className="pin-err">Incorrect PIN. Try again.</div>}
       {hint && <div className="pin-hint">{hint}</div>}
@@ -952,15 +955,9 @@ function CollectorPortal({ data, onHome }) {
       </div>
       <div className="ctn">
         <div className="card" style={{maxWidth:380,margin:"0 auto"}}>
-          <div style={{fontSize:11,color:"#AAA",textAlign:"center",marginBottom:8}}>
-            Staff loaded: {STAFF_BASE.map(s=>s.name.split(" ")[0]).join(", ")}
-          </div>
-          <div style={{fontSize:10,color:"#CCC",textAlign:"center",marginBottom:8}}>
-            PINs: {STAFF_BASE.map(s=>s.pin).join(" · ")}
-          </div>
           <PinPad
             pinColor="#1B4965"
-            hint="Enter your assigned PIN"
+            hint="PINs: 1234 · 5678 · 9012 (demo)"
             onSuccess={p=>{const f=STAFF_BASE.find(s=>s.pin===p);if(f){setLoggedIn(f.id);return true;}return false;}}
           />
         </div>
