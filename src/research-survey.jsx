@@ -50,13 +50,7 @@ const STAFF_BASE = [
 ];
 
 const DEFAULT_SLOTS = {
-  s1: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s2: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s3: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s4: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s5: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s6: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s7: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] }
+  s1: {}, s2: {}, s3: {}, s4: {}, s5: {}, s6: {}, s7: {}
 };
 
 const DEFAULT_CAPACITY = { 
@@ -954,7 +948,7 @@ function CollectorPortal({ data, onHome }) {
         <div className="card" style={{maxWidth:380,margin:"0 auto"}}>
           <PinPad
             pinColor="#1B4965"
-            hint="PINs: 1234 · 5678 · 9012 (demo)"
+            hint="Enter the PIN assigned to you by the study admin."
             onSuccess={p=>{const f=STAFF_BASE.find(s=>s.pin===p);if(f){setLoggedIn(f.id);return true;}return false;}}
           />
         </div>
