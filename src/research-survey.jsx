@@ -44,19 +44,19 @@ const STAFF_BASE = [
   { id: "s2", name: "Ako Abane Tabe", role: "Data Collector", avatar: "AT", color: "#1B4965", pin: "4829", email: "tabane@purdue.edu" },
   { id: "s3", name: "Zhengyi Jiang", role: "Data Collector", avatar: "ZJ", color: "#6B2737", pin: "7104", email: "jiang808@purdue.edu" },
   { id: "s4", name: "Manas Kathuria", role: "Data Collector", avatar: "MK", color: "#E07A5F", pin: "3952", email: "mkathuri@purdue.edu" },
-  { id: "s5", name: "Aashvi Miten Majmundar", role: "Data Collector", avatar: "AM", color: "#3D405B", pin: "8261", email: "amajmund@purdue.edu" },
+  { id: "s5", name: "Aashvi Miten Majmundar", role: "Data Collector", avatar: "AA", color: "#3D405B", pin: "8261", email: "amajmund@purdue.edu" },
   { id: "s6", name: "Nidhi Kirani", role: "Data Collector", avatar: "NK", color: "#81B29A", pin: "5037", email: "nkirani@purdue.edu" },
   { id: "s7", name: "Junior Bennett", role: "Data Collector", avatar: "JB", color: "#F2CC8F", pin: "6490", email: "benne322@purdue.edu" }
 ];
 
 const DEFAULT_SLOTS = {
-  s1: {},
-  s2: {},
-  s3: {},
-  s4: {},
-  s5: {},
-  s6: {},
-  s7: {}
+  s1: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
+  s2: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
+  s3: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
+  s4: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
+  s5: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
+  s6: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
+  s7: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] }
 };
 
 const DEFAULT_CAPACITY = { 
