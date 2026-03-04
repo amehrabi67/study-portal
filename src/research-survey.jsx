@@ -46,7 +46,9 @@ const STAFF_BASE = [
   { id: "s4", name: "Manas Kathuria", role: "Data Collector", avatar: "MK", color: "#E07A5F", pin: "3952", email: "mkathuri@purdue.edu" },
   { id: "s5", name: "Aashvi Miten Majmundar", role: "Data Collector", avatar: "AA", color: "#3D405B", pin: "8261", email: "amajmund@purdue.edu" },
   { id: "s6", name: "Nidhi Kirani", role: "Data Collector", avatar: "NK", color: "#81B29A", pin: "5037", email: "nkirani@purdue.edu" },
-  { id: "s7", name: "Junior Bennett", role: "Data Collector", avatar: "JB", color: "#F2CC8F", pin: "6490", email: "benne322@purdue.edu" }
+  { id: "s7", name: "Junior Bennett", role: "Data Collector", avatar: "JB", color: "#F2CC8F", pin: "6490", email: "benne322@purdue.edu" },
+  { id: "s8", name: "Prof.Morphew", role: "Lead Data Collector", avatar: "MF", color: "#81B29A", pin: "1111", email: "jmorphew@purdue.edu" }
+  
 ];
 
 const DEFAULT_SLOTS = {
@@ -56,7 +58,8 @@ const DEFAULT_SLOTS = {
   s4: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
   s5: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
   s6: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s7: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] }
+  s7: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
+  s8: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] }
 };
 
 const DEFAULT_CAPACITY = { 
@@ -66,7 +69,8 @@ const DEFAULT_CAPACITY = {
   s4: 15, 
   s5: 15, 
   s6: 15, 
-  s7: 15 
+  s7: 15,
+  s8: 15
 };
 const ALL_TIMES = ["8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"];
 const DAYS   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
