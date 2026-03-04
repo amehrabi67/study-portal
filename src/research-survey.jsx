@@ -47,7 +47,7 @@ const STAFF_BASE = [
   { id: "s5", name: "Aashvi Miten Majmundar", role: "Data Collector", avatar: "AA", color: "#3D405B", pin: "8261", email: "amajmund@purdue.edu" },
   { id: "s6", name: "Nidhi Kirani", role: "Data Collector", avatar: "NK", color: "#81B29A", pin: "5037", email: "nkirani@purdue.edu" },
   { id: "s7", name: "Junior Bennett", role: "Data Collector", avatar: "JB", color: "#F2CC8F", pin: "6490", email: "benne322@purdue.edu" },
-  { id: "s8", name: "Prof.Morphew", role: "Lead Data Collector", avatar: "MF", color: "#81B29A", pin: "1111", email: "jmorphew@purdue.edu" }
+  { id: "s8", name: "Prof Morphew", role: "Lead Data Collector", avatar: "JM", color: "#81B29A", pin: "1111", email: "jmorphew@purdue.edu" }
   
 ];
 
