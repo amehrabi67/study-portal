@@ -151,8 +151,11 @@ function fbListen(collection, callback) {
     if (!db) { callback([]); return; }
     unsub = db.collection(collection)
       .orderBy("registeredAt","desc")
-      .onSnapshot(snap => callback(snap.docs.map(d=>d.data())));
-  });
+      .onSnapshot(
+        snap => callback(snap.docs.map(d=>d.data())),
+        _err => callback([])   // permission-denied / offline → empty, never throw
+      );
+  }).catch(() => callback([]));
   return ()=>unsub();
 }
 
@@ -166,8 +169,11 @@ function fbListenDoc(collection, docId, callback, fallback=null) {
   getDB().then(db => {
     if (!db) { callback(fallback); return; }
     unsub = db.collection(collection).doc(docId)
-      .onSnapshot(snap => callback(snap.exists ? snap.data() : fallback));
-  });
+      .onSnapshot(
+        snap => callback(snap.exists ? snap.data() : fallback),
+        _err => callback(fallback)   // permission-denied / offline → fallback, never hang
+      );
+  }).catch(() => callback(fallback));
   return ()=>unsub();
 }
 
