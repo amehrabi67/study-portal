@@ -40,37 +40,22 @@ const ADMIN_PIN = "0000";
 
 // ─── Staff roster ─────────────────────────────────────────────────────────────
 const STAFF_BASE = [
-  { id: "s1", name: "Amirreza Mehrabi", role: "Lead Data Collector", avatar: "AM", color: "#2D6A4F", pin: "1234", email: "amehrabi@purdue.edu" },
-  { id: "s2", name: "Ako Abane Tabe", role: "Data Collector", avatar: "AT", color: "#1B4965", pin: "4829", email: "tabane@purdue.edu" },
-  { id: "s3", name: "Zhengyi Jiang", role: "Data Collector", avatar: "ZJ", color: "#6B2737", pin: "7104", email: "jiang808@purdue.edu" },
-  { id: "s4", name: "Manas Kathuria", role: "Data Collector", avatar: "MK", color: "#E07A5F", pin: "3952", email: "mkathuri@purdue.edu" },
-  { id: "s5", name: "Aashvi Miten Majmundar", role: "Data Collector", avatar: "AA", color: "#3D405B", pin: "8261", email: "amajmund@purdue.edu" },
-  { id: "s6", name: "Nidhi Kirani", role: "Data Collector", avatar: "NK", color: "#81B29A", pin: "5037", email: "nkirani@purdue.edu" },
-  { id: "s7", name: "Junior Bennett", role: "Data Collector", avatar: "JB", color: "#F2CC8F", pin: "6490", email: "benne322@purdue.edu" },
-  { id: "s8", name: "Prof Morphew", role: "Lead Data Collector", avatar: "JM", color: "#81B29A", pin: "1111", email: "jmorphew@purdue.edu" }
-  
+  { id: "s1", name: "Amirreza Mehrabi", role: "Lead Data Collector", avatar: "AM", color: "#2D6A4F", pin: "1234", email: "amehrabi@purdue.edu" }
 ];
 
 const DEFAULT_SLOTS = {
-  s1: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s2: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s3: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s4: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s5: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s6: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s7: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] },
-  s8: { "2026-03-03": ["10:00 AM"], "2026-03-04": ["10:00 AM"] }
+  s1: {
+    "2026-09-01": ["10:00 AM", "1:00 PM", "3:00 PM"],
+    "2026-09-02": ["10:00 AM", "1:00 PM", "3:00 PM"],
+    "2026-09-08": ["10:00 AM", "1:00 PM", "3:00 PM"],
+    "2026-09-09": ["10:00 AM", "1:00 PM", "3:00 PM"],
+    "2026-09-15": ["10:00 AM", "1:00 PM", "3:00 PM"],
+    "2026-09-16": ["10:00 AM", "1:00 PM", "3:00 PM"]
+  }
 };
 
-const DEFAULT_CAPACITY = { 
-  s1: 20, 
-  s2: 15, 
-  s3: 15, 
-  s4: 15, 
-  s5: 15, 
-  s6: 15, 
-  s7: 15,
-  s8: 15
+const DEFAULT_CAPACITY = {
+  s1: 40
 };
 const ALL_TIMES = ["8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"];
 const DAYS   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -167,6 +152,21 @@ function fbListen(collection, callback) {
     unsub = db.collection(collection)
       .orderBy("registeredAt","desc")
       .onSnapshot(snap => callback(snap.docs.map(d=>d.data())));
+  });
+  return ()=>unsub();
+}
+
+// Real-time listener for a SINGLE config document (e.g. staffSlots, staffCapacity).
+// Keeps availability in sync across all open browsers so a slot booked by one
+// participant immediately disappears for everyone else. Falls back to a one-time
+// localStorage read in demo mode.
+function fbListenDoc(collection, docId, callback, fallback=null) {
+  if (!isConfigured()) { callback(LS.get(`${collection}/${docId}`) ?? fallback); return ()=>{}; }
+  let unsub = ()=>{};
+  getDB().then(db => {
+    if (!db) { callback(fallback); return; }
+    unsub = db.collection(collection).doc(docId)
+      .onSnapshot(snap => callback(snap.exists ? snap.data() : fallback));
   });
   return ()=>unsub();
 }
@@ -443,14 +443,17 @@ function useStudyData() {
   const [bookings, setBookings] = useState([]);
   const [loading,  setLoading]  = useState(true);
 
-  // Initial load
+  // Live availability + capacity listeners — keep every open browser in sync so a
+  // slot booked by one participant instantly disappears for everyone else.
   useEffect(() => {
-    (async () => {
-      const s = await fbGet("config","staffSlots",    DEFAULT_SLOTS);
-      const c = await fbGet("config","staffCapacity", DEFAULT_CAPACITY);
-      setSlots(s); setCap(c);
+    const unsubSlots = fbListenDoc("config", "staffSlots", s => {
+      setSlots(s || DEFAULT_SLOTS);
       setLoading(false);
-    })();
+    }, DEFAULT_SLOTS);
+    const unsubCap = fbListenDoc("config", "staffCapacity", c => {
+      setCap(c || DEFAULT_CAPACITY);
+    }, DEFAULT_CAPACITY);
+    return () => { unsubSlots(); unsubCap(); };
   }, []);
 
   // Live bookings listener
@@ -627,7 +630,7 @@ function ParticipantPortal({ data, onHome }) {
   const [form,     setForm]    = useState({firstName:"",lastName:"",email:"",age:"",year:"",major:"",phone:""});
   const [selStaff, setSelStaff]= useState(null);
   const [calYear,  setCalYear] = useState(2026);
-  const [calMonth, setCalMon]  = useState(2);
+  const [calMonth, setCalMon]  = useState(8);
   const [selDate,  setSelDate] = useState(null);
   const [selTime,  setSelTime] = useState(null);
   const [booking,  setBooking] = useState(null);
@@ -920,7 +923,7 @@ function CollectorPortal({ data, onHome }) {
   const { slots, capacity, bookings, saveSlots, saveCap, loading } = data;
   const [loggedIn, setLoggedIn] = useState(null);
   const [calYear,  setCalYear]  = useState(2026);
-  const [calMonth, setCalMon]   = useState(2);
+  const [calMonth, setCalMon]   = useState(8);
   const [selDate,  setSelDate]  = useState(null);
   const [newDate,  setNewDate]  = useState("");
   const [dirty,    setDirty]    = useState(false);
