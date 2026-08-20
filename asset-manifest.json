@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/study-portal/static/js/main.a158fafa.js",
+    "main.js": "/study-portal/static/js/main.e500978f.js",
     "index.html": "/study-portal/index.html",
-    "main.a158fafa.js.map": "/study-portal/static/js/main.a158fafa.js.map"
+    "main.e500978f.js.map": "/study-portal/static/js/main.e500978f.js.map"
   },
   "entrypoints": [
-    "static/js/main.a158fafa.js"
+    "static/js/main.e500978f.js"
   ]
 }
